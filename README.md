@@ -4,6 +4,10 @@ A client-side React + TypeScript prototype for exploring illustrative production
 
 The map fills the viewport, with filters, production summaries, and the selected-country trend in a collapsible side panel. The sidebar uses Google Fonts' Inter typeface, and the selected light/dark theme is saved in local storage.
 
+## Prototype result
+
+![Origin production map showing wheat production across countries](./docs/screenshots/production-map.png)
+
 ## Run locally
 
 ```sh
