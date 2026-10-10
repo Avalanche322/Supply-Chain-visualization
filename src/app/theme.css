@@ -1,0 +1,126 @@
+.theme-dark .side-panel {
+  border-right-color: #283431;
+  background: #171f1d;
+  box-shadow: 14px 0 44px rgba(0, 0, 0, 0.34);
+}
+
+.theme-dark .panel-brand,
+.theme-dark .panel-footer {
+  border-color: #2b3632;
+}
+
+.theme-dark .brand-mark {
+  border-color: #58705e;
+  color: #b2c9a6;
+}
+
+.theme-dark .brand-name,
+.theme-dark .panel-intro h1,
+.theme-dark .section-heading h2,
+.theme-dark .summary-total strong,
+.theme-dark .summary-stat strong,
+.theme-dark .spotlight-heading h3,
+.theme-dark .spotlight-total strong {
+  color: #e0e8de;
+}
+
+.theme-dark .brand-section,
+.theme-dark .eyebrow,
+.theme-dark .panel-intro > p:last-child,
+.theme-dark .filter-select label,
+.theme-dark .filter-label,
+.theme-dark .metric-label,
+.theme-dark .metric-caption,
+.theme-dark .mock-note,
+.theme-dark .panel-footer,
+.theme-dark .summary-years,
+.theme-dark .chart-years {
+  color: #97a59a;
+}
+
+.theme-dark .filter-guidance {
+  border-left-color: #9ab487;
+  color: #c4d1bc;
+  background: #253129;
+}
+
+.theme-dark .brand-divider,
+.theme-dark .panel-section {
+  border-color: #2b3632;
+}
+
+.theme-dark .theme-toggle {
+  border-color: #3b4942;
+  color: #c6d4c1;
+  background: #222d29;
+}
+
+.theme-dark .panel-close {
+  border-color: #3b4942;
+  color: #c6d4c1;
+  background: #222d29;
+}
+
+.theme-dark .filter-select select,
+.theme-dark .year-range select {
+  border-color: #38443e;
+  color: #dce5d9;
+  background-color: #202a26;
+}
+
+.theme-dark .filter-clear {
+  color: #a7b5a9;
+}
+
+.theme-dark .filter-clear:hover {
+  color: #e0e8de;
+  background: #303c36;
+}
+
+.theme-dark .summary-total,
+.theme-dark .summary-stat {
+  border-color: #303c36;
+  background: #202a26;
+}
+
+.theme-dark .country-code {
+  color: #bfd3b0;
+  background: #2b3a30;
+}
+
+.theme-dark .chart-heading {
+  color: #c1cec1;
+}
+
+.theme-dark .chart-heading span + span {
+  color: #8e9c91;
+}
+
+.theme-dark .chart-grid {
+  stroke: #303b35;
+}
+
+.theme-dark .chart-axis {
+  stroke: #3a463f;
+}
+
+.theme-dark .chart-point {
+  fill: #171f1d;
+}
+
+.theme-dark .panel-open {
+  border-color: rgba(225, 235, 223, 0.16);
+  color: rgba(235, 242, 233, 0.9);
+  background: rgba(20, 31, 35, 0.88);
+}
+
+.theme-light .panel-open {
+  border-color: rgba(45, 67, 52, 0.15);
+  color: #3d5144;
+  background: rgba(249, 251, 246, 0.94);
+}
+
+.theme-light .panel-open .brand-mark {
+  border-color: #b7c5ae;
+  color: #55785b;
+}
