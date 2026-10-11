@@ -1,17 +1,17 @@
 .theme-dark .side-panel {
-  border-right-color: #283431;
-  background: #171f1d;
+  border-color: #2b3b45;
+  background: #151f25;
   box-shadow: 14px 0 44px rgba(0, 0, 0, 0.34);
 }
 
 .theme-dark .panel-brand,
 .theme-dark .panel-footer {
-  border-color: #2b3632;
+  border-color: #2a3a44;
 }
 
 .theme-dark .brand-mark {
-  border-color: #58705e;
-  color: #b2c9a6;
+  border-color: #4e7794;
+  color: #a8d7f4;
 }
 
 .theme-dark .brand-name,
@@ -39,33 +39,71 @@
 }
 
 .theme-dark .filter-guidance {
-  border-left-color: #9ab487;
-  color: #c4d1bc;
-  background: #253129;
+  border-left-color: #68a9d1;
+  color: #c5e2f4;
+  background: #20313c;
 }
 
 .theme-dark .brand-divider,
 .theme-dark .panel-section {
-  border-color: #2b3632;
+  border-color: #2a3a44;
 }
 
 .theme-dark .theme-toggle {
-  border-color: #3b4942;
-  color: #c6d4c1;
-  background: #222d29;
+  border-color: #3b4e59;
+  color: #c6dced;
+  background: #202c33;
 }
 
 .theme-dark .panel-close {
-  border-color: #3b4942;
-  color: #c6d4c1;
-  background: #222d29;
+  border-color: #3b4e59;
+  color: #c6dced;
+  background: #202c33;
 }
 
 .theme-dark .filter-select select,
+.theme-dark .filter-select-input,
+.theme-dark .filter-search,
 .theme-dark .year-range select {
-  border-color: #38443e;
-  color: #dce5d9;
-  background-color: #202a26;
+  border-color: #364954;
+  color: #dce5e9;
+  background-color: #1d2930;
+}
+
+.theme-dark .filter-options {
+  border-color: #364954;
+  background: #1d2930;
+}
+
+.theme-dark .filter-option {
+  color: #dce5e9;
+}
+
+.theme-dark .filter-option:hover,
+.theme-dark .filter-option.is-active {
+  background: #293b47;
+}
+
+.theme-dark .filter-option.is-selected {
+  color: #a8d7f4;
+}
+
+.theme-dark .filter-no-options {
+  color: #97a59a;
+}
+
+.theme-dark .filter-search::placeholder {
+  color: #819087;
+}
+
+.theme-dark .filter-chip {
+  border-color: #3c5b70;
+  color: #c5e2f4;
+  background: #243746;
+}
+
+.theme-dark .clear-filters {
+  color: #a7b5a9;
 }
 
 .theme-dark .filter-clear {
@@ -73,23 +111,48 @@
 }
 
 .theme-dark .filter-clear:hover {
-  color: #e0e8de;
-  background: #303c36;
+  color: #e0e8ed;
+  background: #293b47;
 }
 
 .theme-dark .summary-total,
 .theme-dark .summary-stat {
-  border-color: #303c36;
-  background: #202a26;
+  border-color: #2e414b;
+  background: #1d2930;
 }
 
 .theme-dark .country-code {
-  color: #bfd3b0;
-  background: #2b3a30;
+  color: #c5e2f4;
+  background: #243746;
 }
 
 .theme-dark .chart-heading {
   color: #c1cec1;
+}
+
+.theme-dark .summary-market-share,
+.theme-dark .top-list {
+  border-color: #2e414b;
+  background: #1d2930;
+}
+
+.theme-dark .summary-market-share strong,
+.theme-dark .spotlight-share strong {
+  color: #8dcfff;
+}
+
+.theme-dark .spotlight-share,
+.theme-dark .top-list-row {
+  color: #aab8ac;
+}
+
+.theme-dark .top-list-row > strong {
+  color: #dce5d9;
+}
+
+.theme-dark .top-list-row i {
+  color: #a8d7f4;
+  background: #243746;
 }
 
 .theme-dark .chart-heading span + span {
@@ -97,15 +160,15 @@
 }
 
 .theme-dark .chart-grid {
-  stroke: #303b35;
+  stroke: #2b3e48;
 }
 
 .theme-dark .chart-axis {
-  stroke: #3a463f;
+  stroke: #3b505c;
 }
 
 .theme-dark .chart-point {
-  fill: #171f1d;
+  fill: #151f25;
 }
 
 .theme-dark .panel-open {
@@ -121,6 +184,18 @@
 }
 
 .theme-light .panel-open .brand-mark {
-  border-color: #b7c5ae;
-  color: #55785b;
+  border-color: #b5cde0;
+  color: #397eae;
+}
+
+.theme-light .side-panel {
+  border-color: rgba(56, 105, 137, 0.16);
+  background: #f5f8fa;
+}
+
+.theme-light .panel-brand,
+.theme-light .panel-footer,
+.theme-light .brand-divider,
+.theme-light .panel-section {
+  border-color: #dfe8ed;
 }

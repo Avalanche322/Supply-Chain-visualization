@@ -12,6 +12,71 @@
   height: 100%;
 }
 
+.map-country-tooltip {
+  position: absolute;
+  z-index: 5;
+  width: 235px;
+  padding: 12px 13px;
+  border: 1px solid rgba(225, 235, 223, 0.15);
+  border-radius: 8px;
+  color: #e7eee5;
+  background: rgba(19, 31, 35, 0.95);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+.map-tooltip-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.map-tooltip-title > span:first-child {
+  font-size: 17px;
+}
+
+.map-tooltip-title strong {
+  overflow: hidden;
+  flex: 1;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map-tooltip-title > span:last-child {
+  color: #9caa9d;
+  font-size: 11px;
+}
+
+.map-tooltip-product {
+  margin-top: 10px;
+  color: #8dcfff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.map-tooltip-value {
+  margin-top: 3px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.map-tooltip-change {
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.map-tooltip-change.is-positive {
+  color: #8dcfff;
+}
+
+.map-tooltip-change.is-negative {
+  color: #edaa91;
+}
+
 .map-loading .map-canvas,
 .map-error .map-canvas {
   visibility: hidden;
@@ -34,7 +99,7 @@
 }
 
 .theme-light .map-status {
-  color: #526351;
+  color: #3b5b70;
   background: #e9eee7;
 }
 
@@ -76,7 +141,7 @@
   width: 70px;
   height: 6px;
   border-radius: 8px;
-  background: linear-gradient(90deg, #395b4e, #8ab878, #b8e986);
+  background: linear-gradient(90deg, #224d6f, #4f97c5, #7dc5f4);
 }
 
 .legend-divider {
@@ -128,8 +193,34 @@
   background: rgba(249, 251, 246, 0.92);
 }
 
+.theme-light .map-country-tooltip {
+  border-color: rgba(58, 77, 63, 0.14);
+  color: #2e4035;
+  background: rgba(249, 251, 246, 0.96);
+}
+
+.theme-light .map-tooltip-title > span:last-child {
+  color: #77847a;
+}
+
+.theme-light .map-tooltip-product {
+  color: #397eae;
+}
+
+.theme-light .map-tooltip-change.is-positive {
+  color: #397eae;
+}
+
+.theme-light .map-tooltip-change.is-negative {
+  color: #b45d42;
+}
+
 .theme-light .legend-caption {
   color: #3f5045;
+}
+
+.theme-light .legend-gradient {
+  background: linear-gradient(90deg, #c2dcee, #6cadd2, #2b6a99);
 }
 
 .theme-light .legend-divider {

@@ -35,6 +35,8 @@ export interface AnnualProduction {
 export interface MapCountryStyle {
   fillColor: string
   isSelected: boolean
+  production: number
+  changePercent?: number
 }
 
 export type MapCountryStyles = Record<string, MapCountryStyle>
@@ -201,8 +203,8 @@ function colorForProductionInTheme(
 ) {
   if (value <= 0) return 'rgba(0, 0, 0, 0)'
   const amount = Math.min(value / maxValue, 1)
-  const start = theme === 'dark' ? [57, 91, 78] : [181, 211, 166]
-  const end = theme === 'dark' ? [184, 233, 134] : [59, 103, 65]
+  const start = theme === 'dark' ? [34, 77, 111] : [194, 220, 238]
+  const end = theme === 'dark' ? [125, 197, 244] : [43, 106, 153]
   const color = start.map((channel, index) =>
     Math.round(channel + (end[index] - channel) * amount),
   )
@@ -213,14 +215,26 @@ export function getMapCountryStyles(
   production: CountryProduction[],
   selectedCountryId: string,
   theme: MapTheme = 'dark',
+  previousProduction: CountryProduction[] = [],
 ): MapCountryStyles {
   const maxValue = Math.max(...production.map((entry) => entry.production), 1)
+  const previousByCountry = new Map(
+    previousProduction.map((entry) => [entry.countryId, entry.production]),
+  )
   return Object.fromEntries(
     production.map((entry) => [
       entry.countryId,
       {
         fillColor: colorForProductionInTheme(entry.production, maxValue, theme),
         isSelected: entry.countryId === selectedCountryId,
+        production: entry.production,
+        ...(previousByCountry.has(entry.countryId)
+          ? {
+              changePercent:
+                ((entry.production - previousByCountry.get(entry.countryId)!)
+                  / previousByCountry.get(entry.countryId)!) * 100,
+            }
+          : {}),
       },
     ]),
   )

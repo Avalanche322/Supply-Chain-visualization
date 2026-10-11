@@ -90,5 +90,28 @@ describe('production aggregates', () => {
     expect(darkStyles.BRA.isSelected).toBe(true)
     expect(darkStyles.COL.isSelected).toBe(false)
     expect(darkStyles.BRA.fillColor).not.toBe(lightStyles.BRA.fillColor)
+    for (const color of [
+      ...Object.values(darkStyles).map(({ fillColor }) => fillColor),
+      ...Object.values(lightStyles).map(({ fillColor }) => fillColor),
+    ]) {
+      const red = Number.parseInt(color.slice(1, 3), 16)
+      const green = Number.parseInt(color.slice(3, 5), 16)
+      const blue = Number.parseInt(color.slice(5, 7), 16)
+
+      expect(blue).toBeGreaterThan(green)
+      expect(green).toBeGreaterThan(red)
+    }
+  })
+
+  it('adds annual values and year-over-year change to map styles', () => {
+    const styles = getMapCountryStyles(
+      [{ countryId: 'BRA', countryName: 'Brazil', production: 12 }],
+      '',
+      'dark',
+      [{ countryId: 'BRA', countryName: 'Brazil', production: 10 }],
+    )
+
+    expect(styles.BRA.production).toBe(12)
+    expect(styles.BRA.changePercent).toBe(20)
   })
 })

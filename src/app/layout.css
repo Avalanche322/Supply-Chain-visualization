@@ -56,9 +56,9 @@
   place-items: center;
   width: 26px;
   height: 26px;
-  border: 1px solid #b7c5ae;
+  border: 1px solid #b5cde0;
   border-radius: 50%;
-  color: #55785b;
+  color: #397eae;
   font-family: 'Manrope', sans-serif;
   font-size: 14px;
   font-weight: 700;
@@ -147,8 +147,8 @@
 .panel-open .brand-mark {
   width: 21px;
   height: 21px;
-  border-color: rgba(210, 227, 202, 0.38);
-  color: #bbd4a9;
+  border-color: rgba(185, 221, 244, 0.42);
+  color: #b9ddf4;
   font-size: 11px;
 }
 
@@ -206,7 +206,7 @@
 }
 
 .section-index {
-  color: #87a176;
+  color: #397eae;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;

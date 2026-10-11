@@ -1,5 +1,6 @@
 import ProductionFilters from './features/filters/ProductionFilters'
 import MapLegend from './features/map/MapLegend'
+import TimelineControl from './features/timeline/TimelineControl'
 import MapView from './features/map/MapView'
 import { useProductionExplorer } from './features/explorer/model/useProductionExplorer'
 import CountrySpotlight from './features/country-spotlight/CountrySpotlight'
@@ -10,12 +11,12 @@ import './features/summary/styles.css'
 interface ProductionSummaryProps {
   explorer: Pick<
     ProductionExplorerModel,
-    | 'startYear'
-    | 'endYear'
+    | 'year'
     | 'selectedProduct'
     | 'totalProduction'
     | 'productionByCountry'
     | 'leadingProducer'
+    | 'marketShare'
   >
 }
 
@@ -27,12 +28,12 @@ function formatValue(value: number, unit: string) {
 
 function ProductionSummary({ explorer }: ProductionSummaryProps) {
   const {
-    startYear,
-    endYear,
+    year,
     selectedProduct,
     totalProduction,
     productionByCountry,
     leadingProducer,
+    marketShare,
   } = explorer
 
   return (
@@ -40,10 +41,10 @@ function ProductionSummary({ explorer }: ProductionSummaryProps) {
       <div className="section-heading">
         <span className="section-index">02</span>
         <h2>At a glance</h2>
-        <span className="summary-years">{startYear}—{endYear}</span>
+        <span className="summary-years">{year}</span>
       </div>
       <div className="summary-total">
-        <span className="metric-label">TOTAL PRODUCTION</span>
+        <span className="metric-label">GLOBAL PRODUCTION</span>
         <strong>
           {selectedProduct
             ? formatValue(totalProduction, selectedProduct.unit)
@@ -62,6 +63,12 @@ function ProductionSummary({ explorer }: ProductionSummaryProps) {
           <span className="metric-label">TOP PRODUCER</span>
           <strong>{leadingProducer?.countryName ?? '—'}</strong>
         </div>
+      </div>
+      <div className="summary-market-share">
+        <span className="metric-label">SELECTED COUNTRY SHARE</span>
+        <strong>{marketShare === undefined
+          ? '—'
+          : `${(marketShare * 100).toFixed(1)}%`}</strong>
       </div>
     </section>
   )
@@ -82,13 +89,21 @@ function App() {
           <MapView
             data={explorer.mapData}
             theme={explorer.theme}
+            selectedProduct={explorer.selectedProduct}
+            year={explorer.year}
             onCountrySelect={explorer.selectCountry}
           />
-          <MapLegend selectedProduct={explorer.selectedProduct} />
+          <TimelineControl placement="map" explorer={explorer} />
+          <MapLegend
+            selectedProduct={explorer.selectedProduct}
+            data={explorer.mapData}
+            year={explorer.year}
+          />
         </>
       }
     >
       <ProductionFilters explorer={explorer} />
+      <TimelineControl placement="sidebar" explorer={explorer} />
       <ProductionSummary explorer={explorer} />
       <CountrySpotlight explorer={explorer} />
     </ProductionExplorerLayout>

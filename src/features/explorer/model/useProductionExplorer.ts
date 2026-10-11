@@ -33,6 +33,8 @@ export function useProductionExplorer() {
   const [selectedProductId, setSelectedProductId] = useState('')
   const [startYear, setStartYear] = useState(START_YEAR)
   const [endYear, setEndYear] = useState(END_YEAR)
+  const [year, setYear] = useState(END_YEAR)
+  const [isPlaying, setIsPlaying] = useState(false)
 
   const selectedCountry = COUNTRIES.find(
     (country) => country.id === selectedCountryId,
@@ -49,9 +51,16 @@ export function useProductionExplorer() {
   const productionByCountry = useMemo(
     () =>
       selectedProductId
-        ? getProductionByCountry(selectedProductId, startYear, endYear)
+        ? getProductionByCountry(selectedProductId, year, year)
         : [],
-    [selectedProductId, startYear, endYear],
+    [selectedProductId, year],
+  )
+  const previousProductionByCountry = useMemo(
+    () =>
+      selectedProductId && year > START_YEAR
+        ? getProductionByCountry(selectedProductId, year - 1, year - 1)
+        : [],
+    [selectedProductId, year],
   )
   const countryProduction = productionByCountry.find(
     (entry) => entry.countryId === selectedCountryId,
@@ -66,14 +75,54 @@ export function useProductionExplorer() {
         )
       : []
   const mapData = useMemo(
-    () => getMapCountryStyles(productionByCountry, selectedCountryId, theme),
-    [productionByCountry, selectedCountryId, theme],
+    () => getMapCountryStyles(
+      productionByCountry,
+      selectedCountryId,
+      theme,
+      previousProductionByCountry,
+    ),
+    [productionByCountry, previousProductionByCountry, selectedCountryId, theme],
   )
   const leadingProducer = productionByCountry[0]
   const totalProduction = productionByCountry.reduce(
     (sum, entry) => sum + entry.production,
     0,
   )
+  const marketShare = totalProduction > 0 && countryProduction
+    ? countryProduction.production / totalProduction
+    : undefined
+  const annualTrend = useMemo(
+    () => selectedProductId
+      ? Array.from({ length: endYear - startYear + 1 }, (_, index) => {
+          const trendYear = startYear + index
+          const total = getProductionByCountry(
+            selectedProductId,
+            trendYear,
+            trendYear,
+          ).reduce((sum, entry) => sum + entry.production, 0)
+          return { year: trendYear, total }
+        })
+      : [],
+    [selectedProductId, startYear, endYear],
+  )
+  const topProducts = useMemo(
+    () => selectedCountryId
+      ? getProductsForCountry(selectedCountryId)
+          .map((product) => ({
+            ...product,
+            production: getCountrySeries(
+              selectedCountryId,
+              product.id,
+              year,
+              year,
+            )[0]?.production ?? 0,
+          }))
+          .sort((left, right) => right.production - left.production)
+          .slice(0, 5)
+      : [],
+    [selectedCountryId, year],
+  )
+  const topCountries = productionByCountry.slice(0, 5)
 
   useEffect(() => {
     try {
@@ -82,6 +131,18 @@ export function useProductionExplorer() {
       console.warn('Unable to save the map theme', error)
     }
   }, [theme])
+
+  useEffect(() => {
+    if (!isPlaying || !selectedProductId) return
+
+    const intervalId = window.setInterval(() => {
+      setYear((currentYear) =>
+        currentYear >= endYear ? startYear : currentYear + 1,
+      )
+    }, 900)
+
+    return () => window.clearInterval(intervalId)
+  }, [isPlaying, selectedProductId, startYear, endYear])
 
   function selectCountry(countryId: string) {
     if (!countryId) {
@@ -95,11 +156,13 @@ export function useProductionExplorer() {
     if (
       !availableProducts.some((product) => product.id === selectedProductId)
     ) {
+      setIsPlaying(false)
       setSelectedProductId(availableProducts[0]?.id ?? '')
     }
   }
 
   function selectProduct(productId: string) {
+    if (productId !== selectedProductId) setIsPlaying(false)
     setSelectedProductId(productId)
     if (productId) setSelectedCountryId('')
   }
@@ -107,11 +170,19 @@ export function useProductionExplorer() {
   function changeStartYear(value: number) {
     setStartYear(value)
     if (value > endYear) setEndYear(value)
+    if (year < value) setYear(value)
   }
 
   function changeEndYear(value: number) {
     setEndYear(value)
     if (value < startYear) setStartYear(value)
+    if (year > value) setYear(value)
+  }
+
+  function clearFilters() {
+    setSelectedCountryId('')
+    setSelectedProductId('')
+    setIsPlaying(false)
   }
 
   function toggleTheme() {
@@ -138,18 +209,27 @@ export function useProductionExplorer() {
     selectedProductId,
     startYear,
     endYear,
+    year,
+    isPlaying,
     countryOptions,
     productOptions,
     productionByCountry,
     countryProduction,
     countrySeries,
+    annualTrend,
     mapData,
     leadingProducer,
     totalProduction,
+    marketShare,
+    topProducts,
+    topCountries,
     selectCountry,
     selectProduct,
     changeStartYear,
     changeEndYear,
+    setYear,
+    setIsPlaying,
+    clearFilters,
   }
 }
 

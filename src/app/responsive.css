@@ -40,6 +40,24 @@
     transform: translateX(calc(-100% - 12px));
   }
 
+  .timeline-control-map {
+    display: none;
+  }
+
+  .panel-closed .timeline-control-map {
+    position: absolute;
+    right: 12px;
+    bottom: 82px;
+    left: 12px;
+    display: block;
+  }
+
+  .timeline-control-sidebar {
+    position: static;
+    display: block;
+    margin: 0 19px 18px;
+  }
+
   .maplibregl-ctrl-top-right {
     top: 13px;
     right: 13px;

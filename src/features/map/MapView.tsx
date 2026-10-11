@@ -8,7 +8,12 @@ import {
   type StyleSpecification,
 } from 'maplibre-gl'
 import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
-import type { MapCountryStyles, MapTheme } from '../production/model/production'
+import type {
+  MapCountryStyles,
+  MapTheme,
+  Product,
+} from '../production/model/production'
+import { COUNTRIES } from '../production/model/production'
 import { transformMapStyle } from './model/transformMapStyle'
 import { getMapCountryId } from './model/getMapCountryId'
 import './styles.css'
@@ -20,7 +25,23 @@ const MAPLIBRE_DEMO_STYLE = 'https://demotiles.maplibre.org/style.json'
 interface MapViewProps {
   data: MapCountryStyles
   theme: MapTheme
+  selectedProduct?: Product
+  year: number
   onCountrySelect: (countryId: string) => void
+}
+
+interface HoveredCountry {
+  countryId: string
+  x: number
+  y: number
+}
+
+const COUNTRY_FLAGS: Record<string, string> = {
+  ARG: '🇦🇷', AUS: '🇦🇺', BRA: '🇧🇷', CAN: '🇨🇦', CHL: '🇨🇱',
+  CHN: '🇨🇳', COL: '🇨🇴', DEU: '🇩🇪', ETH: '🇪🇹', FRA: '🇫🇷',
+  IDN: '🇮🇩', IND: '🇮🇳', JPN: '🇯🇵', KOR: '🇰🇷', MEX: '🇲🇽',
+  NLD: '🇳🇱', PER: '🇵🇪', POL: '🇵🇱', SAU: '🇸🇦', ZAF: '🇿🇦',
+  TWN: '🇹🇼', UKR: '🇺🇦', USA: '🇺🇸', VNM: '🇻🇳',
 }
 
 function applyTheme(map: MapLibreMap, theme: MapTheme) {
@@ -28,20 +49,25 @@ function applyTheme(map: MapLibreMap, theme: MapTheme) {
   map.setPaintProperty('background', 'background-color', dark ? '#182329' : '#e9eee7')
   map.setPaintProperty('countries-fill', 'fill-color', dark ? '#26343a' : '#f4f6f1')
   map.setPaintProperty('crimea-fill', 'fill-color', dark ? '#26343a' : '#f4f6f1')
-  map.setPaintProperty('countries-boundary', 'line-color', dark ? '#43545a' : '#84968b')
-  map.setPaintProperty('coastline', 'line-color', dark ? '#61747a' : '#89a397')
+  map.setPaintProperty('countries-boundary', 'line-color', dark ? '#496b80' : '#9ba8b0')
+  map.setPaintProperty('coastline', 'line-color', dark ? '#64879b' : '#8799a4')
   map.setPaintProperty('countries-label', 'text-color', dark ? '#eff4ec' : '#24332f')
   map.setPaintProperty('countries-label', 'text-halo-color', dark ? '#25343a' : '#ffffff')
   map.setPaintProperty('geolines', 'line-color', dark ? '#8cb8ca' : '#7d94a6')
   map.setPaintProperty('geolines-label', 'text-color', dark ? '#8cb8ca' : '#7d94a6')
   map.setPaintProperty('geolines-label', 'text-halo-color', dark ? '#25343a' : '#ffffff')
-  map.setPaintProperty('selected-country-border', 'line-color', dark ? '#f6f5e9' : '#253b2d')
+  map.setPaintProperty('selected-country-border', 'line-color', dark ? '#e8f5ff' : '#253f52')
   map.setPaintProperty(
     'selected-country-crimea-border',
     'line-color',
-    dark ? '#f6f5e9' : '#253b2d',
+    dark ? '#e8f5ff' : '#253f52',
   )
-  map.setPaintProperty('country-production-fill', 'fill-outline-color', dark ? '#10191e' : '#84968b')
+  map.setPaintProperty('country-production-fill', 'fill-outline-color', dark ? '#10191e' : '#9ba8b0')
+  map.setPaintProperty(
+    'country-production-crimea-fill',
+    'fill-outline-color',
+    dark ? '#10191e' : '#9ba8b0',
+  )
 }
 
 function updateProductionLayers(
@@ -91,13 +117,20 @@ function updateProductionLayers(
   )
 }
 
-function MapView({ data, theme, onCountrySelect }: MapViewProps) {
+function MapView({
+  data,
+  theme,
+  selectedProduct,
+  year,
+  onCountrySelect,
+}: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapLibreMap | null>(null)
   const dataRef = useRef(data)
   const themeRef = useRef(theme)
   const countrySelectRef = useRef(onCountrySelect)
   const [mapStatus, setMapStatus] = useState<'loading' | 'ready' | 'error'>('loading')
+  const [hoveredCountry, setHoveredCountry] = useState<HoveredCountry | null>(null)
 
   useEffect(() => {
     dataRef.current = data
@@ -150,7 +183,7 @@ function MapView({ data, theme, onCountrySelect }: MapViewProps) {
           zoom: 0,
           minZoom: 0,
           maxZoom: 4,
-          renderWorldCopies: false,
+          renderWorldCopies: true,
         })
         mapRef.current = map
         map.addControl(new NavigationControl({ showCompass: false }), 'top-right')
@@ -164,7 +197,7 @@ function MapView({ data, theme, onCountrySelect }: MapViewProps) {
             paint: {
               'fill-color': '#000000',
               'fill-opacity': 0,
-              'fill-outline-color': '#f7faf4',
+              'fill-outline-color': themeRef.current === 'dark' ? '#f7faf4' : '#9ba8b0',
             },
           }, 'countries-boundary')
           map.addLayer({
@@ -176,7 +209,7 @@ function MapView({ data, theme, onCountrySelect }: MapViewProps) {
             paint: {
               'fill-color': '#000000',
               'fill-opacity': 0.9,
-              'fill-outline-color': '#f7faf4',
+              'fill-outline-color': themeRef.current === 'dark' ? '#f7faf4' : '#9ba8b0',
             },
           }, 'countries-boundary')
           map.addLayer({
@@ -226,20 +259,39 @@ function MapView({ data, theme, onCountrySelect }: MapViewProps) {
             }
           })
           map.on('mousemove', (event) => {
-            const hasSelectableCountry = map?.queryRenderedFeatures(event.point, {
+            const country = map?.queryRenderedFeatures(event.point, {
               layers: [
                 'country-production-fill',
                 'country-production-crimea-fill',
                 'countries-fill',
                 'crimea-fill',
               ],
-            }).some((feature) =>
+            }).find((feature) =>
               getMapCountryId(feature.layer.id, feature.properties) !== undefined,
             )
+            const countryId = country
+              ? getMapCountryId(country.layer.id, country.properties)
+              : undefined
             if (map) {
-              map.getCanvas().style.cursor = hasSelectableCountry ? 'pointer' : ''
+              map.getCanvas().style.cursor = countryId ? 'pointer' : ''
+              if (countryId) {
+                setHoveredCountry({
+                  countryId,
+                  x: Math.max(
+                    8,
+                    Math.min(event.point.x + 14, map.getCanvas().clientWidth - 250),
+                  ),
+                  y: Math.max(
+                    8,
+                    Math.min(event.point.y + 14, map.getCanvas().clientHeight - 110),
+                  ),
+                })
+              } else {
+                setHoveredCountry(null)
+              }
             }
           })
+          map.on('mouseout', () => setHoveredCountry(null))
           setMapStatus('ready')
         })
       } catch (error) {
@@ -281,6 +333,16 @@ function MapView({ data, theme, onCountrySelect }: MapViewProps) {
         role="application"
         aria-label="Interactive world production map. Click a country to explore its production."
       />
+      {hoveredCountry && mapStatus === 'ready' && (
+        <CountryMapTooltip
+          countryId={hoveredCountry.countryId}
+          x={hoveredCountry.x}
+          y={hoveredCountry.y}
+          data={data}
+          selectedProduct={selectedProduct}
+          year={year}
+        />
+      )}
       {mapStatus !== 'ready' && (
         <div
           className={`map-status map-status-${mapStatus}`}
@@ -289,6 +351,55 @@ function MapView({ data, theme, onCountrySelect }: MapViewProps) {
           {mapStatus === 'loading'
             ? 'Loading map…'
             : 'The map could not be loaded. Check your internet connection and reload the page.'}
+        </div>
+      )}
+    </div>
+  )
+}
+
+interface CountryMapTooltipProps {
+  countryId: string
+  x: number
+  y: number
+  data: MapCountryStyles
+  selectedProduct?: Product
+  year: number
+}
+
+function CountryMapTooltip({
+  countryId,
+  x,
+  y,
+  data,
+  selectedProduct,
+  year,
+}: CountryMapTooltipProps) {
+  const country = COUNTRIES.find(({ id }) => id === countryId)
+  const countryData = data[countryId]
+  const format = (value: number) =>
+    new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 }).format(value)
+
+  return (
+    <div className="map-country-tooltip" role="tooltip" style={{ left: x, top: y }}>
+      <div className="map-tooltip-title">
+        <span aria-hidden="true">{COUNTRY_FLAGS[countryId] ?? '🌐'}</span>
+        <strong>{country?.name ?? countryId}</strong>
+        <span>{year}</span>
+      </div>
+      <div className="map-tooltip-product">
+        {selectedProduct?.name ?? 'Production'}
+      </div>
+      <div className="map-tooltip-value">
+        {selectedProduct && countryData
+          ? `${format(countryData.production)} ${selectedProduct.unit}`
+          : selectedProduct
+            ? 'No mock data for this product'
+            : 'Choose a product to view production'}
+      </div>
+      {countryData?.changePercent !== undefined && (
+        <div className={`map-tooltip-change${countryData.changePercent >= 0 ? ' is-positive' : ' is-negative'}`}>
+          {countryData.changePercent >= 0 ? '↗' : '↘'}{' '}
+          {Math.abs(countryData.changePercent).toFixed(1)}% vs. {year - 1}
         </div>
       )}
     </div>

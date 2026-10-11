@@ -1,10 +1,10 @@
 .filter-guidance {
   margin: -3px 0 17px;
   padding: 10px 11px;
-  border-left: 2px solid #87a176;
+  border-left: 2px solid #5b91b5;
   border-radius: 3px;
-  color: #526351;
-  background: #eef3e9;
+  color: #3b5b70;
+  background: #edf5fa;
   font-size: 12px;
   line-height: 1.5;
 }
@@ -16,6 +16,44 @@
   margin-bottom: 13px;
 }
 
+.filter-control {
+  position: relative;
+}
+
+.filter-select-input,
+.year-range select {
+  appearance: none;
+  border: 1px solid #e1e6de;
+  border-radius: 5px;
+  outline: none;
+  color: #2b3933;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.filter-select-input {
+  width: 100%;
+  height: 39px;
+  padding: 0 46px 0 11px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: text;
+}
+
+.filter-select-input::placeholder {
+  color: #a0aaa1;
+}
+
+.filter-control:has(.filter-clear) .filter-select-input {
+  padding-right: 72px;
+}
+
+.filter-select-input:focus {
+  border-color: #5b9bc2;
+  box-shadow: 0 0 0 3px rgba(91, 155, 194, 0.16);
+}
+
 .filter-select label,
 .filter-label,
 .metric-label {
@@ -25,35 +63,83 @@
   letter-spacing: 0.12em;
 }
 
-.filter-select select,
-.year-range select {
-  appearance: none;
-  border: 1px solid #e1e6de;
-  border-radius: 5px;
-  outline: none;
-  color: #2b3933;
-  background-color: #fff;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='m2 3.5 3 3 3-3' fill='none' stroke='%2378837b' stroke-width='1.2'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  cursor: pointer;
+.filter-select-chevron {
+  position: absolute;
+  top: 50%;
+  right: 9px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: #78837b;
+  pointer-events: none;
+  transform: translateY(-50%);
+  font-size: 0;
 }
 
-.filter-control {
-  position: relative;
+.filter-control:has(.filter-clear) .filter-select-chevron {
+  right: 36px;
 }
 
-.filter-select select {
+.filter-select-chevron::before {
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  content: '';
+  transform: rotate(45deg);
+}
+
+.filter-select-chevron.is-open {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.filter-options {
+  position: absolute;
+  z-index: 8;
+  top: calc(100% + 5px);
+  right: 0;
+  left: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid #dce3da;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(31, 47, 38, 0.18);
+}
+
+.filter-option {
+  display: block;
   width: 100%;
-  height: 39px;
-  padding: 0 31px 0 11px;
-  font-size: 13px;
-  font-weight: 500;
+  min-height: 34px;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: 4px;
+  color: #36443b;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
 }
 
-.filter-control:has(.filter-clear) select {
-  padding-right: 58px;
-  background-position: right 36px center;
+.filter-option:hover,
+.filter-option.is-active {
+  background: #edf5fa;
+}
+
+.filter-option.is-selected {
+  color: #315f7c;
+  font-weight: 700;
+}
+
+.filter-no-options {
+  display: block;
+  padding: 9px;
+  color: #89948b;
+  font-size: 12px;
 }
 
 .filter-clear {
@@ -82,20 +168,75 @@
 }
 
 .filter-clear:focus-visible {
-  outline: 2px solid #90ad7c;
+  outline: 2px solid #5b9bc2;
   outline-offset: 1px;
 }
 
-.filter-select select:focus,
-.year-range select:focus {
-  border-color: #90ad7c;
-  box-shadow: 0 0 0 3px rgba(144, 173, 124, 0.14);
+.active-filters {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 2px 5px;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 27px;
+  flex: 0 0 auto;
+  padding: 3px 8px 3px 10px;
+  border: 1px solid #d8e7f1;
+  border-radius: 999px;
+  color: #315f7c;
+  background: #edf5fa;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+}
+
+.filter-chip span {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.clear-filters {
+  flex: 0 0 auto;
+  padding: 5px 2px;
+  border: 0;
+  color: #718071;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.filter-chip:focus-visible,
+.clear-filters:focus-visible {
+  outline: 2px solid #5b9bc2;
+  outline-offset: 2px;
+}
+
+.year-range select:focus,
+.filter-select-input:focus-visible {
+  border-color: #5b9bc2;
+  box-shadow: 0 0 0 3px rgba(91, 155, 194, 0.16);
 }
 
 .year-field {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 12px;
   margin-top: 17px;
 }

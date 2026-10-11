@@ -18,6 +18,14 @@ const selectedExplorer = {
   ],
   startYear: 2010,
   endYear: 2012,
+  year: 2012,
+  marketShare: 0.25,
+  topProducts: [
+    { id: 'coffee', name: 'Coffee', unit: 'million tonnes', production: 3.5 },
+  ],
+  topCountries: [
+    { countryId: 'BRA', countryName: 'Brazil', production: 65.25 },
+  ],
 } satisfies Pick<
   ProductionExplorerModel,
   | 'selectedCountry'
@@ -26,6 +34,10 @@ const selectedExplorer = {
   | 'countrySeries'
   | 'startYear'
   | 'endYear'
+  | 'year'
+  | 'marketShare'
+  | 'topProducts'
+  | 'topCountries'
 >
 
 describe('CountrySpotlight', () => {
@@ -40,6 +52,10 @@ describe('CountrySpotlight', () => {
     expect(screen.getByText('BRA').textContent).toBe('BRA')
     expect(screen.getByText('65.3 million tonnes').textContent)
       .toBe('65.3 million tonnes')
+    expect(screen.getByText('25.0%').textContent).toBe('25.0%')
+    expect(screen.getByText('Top products').textContent).toBe('Top products')
+    expect(screen.getByText('3.5 million tonnes').textContent)
+      .toBe('3.5 million tonnes')
     expect(container.querySelectorAll('.chart-point')).toHaveLength(3)
     expect(points).toHaveLength(3)
     expect(points?.[0]).toBe('20,146')
@@ -59,6 +75,9 @@ describe('CountrySpotlight', () => {
           countryProduction: undefined,
           countrySeries: [],
           selectedProduct: undefined,
+          marketShare: undefined,
+          topProducts: [],
+          topCountries: [],
         }}
       />,
     )

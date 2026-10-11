@@ -67,3 +67,20 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.summary-market-share {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding: 11px 13px;
+  border: 1px solid #e7ebe4;
+  border-radius: 6px;
+  background: #fdfefb;
+}
+
+.summary-market-share strong {
+  color: #397eae;
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+}
