@@ -9,6 +9,7 @@ describe('getMapCountryId', () => {
 
   it('keeps selectable countries mapped by their country code', () => {
     expect(getMapCountryId('countries-fill', { ADM0_A3: 'UKR' })).toBe('UKR')
+    expect(getMapCountryId('production-columns', { countryId: 'UKR' })).toBe('UKR')
   })
 
   it('does not make Russia selectable', () => {

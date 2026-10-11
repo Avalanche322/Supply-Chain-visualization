@@ -132,7 +132,10 @@ function getPair(countryId: string, productId: string) {
 
 function getAnnualValue(pair: ProductionPair, year: number) {
   const yearsFromStart = year - START_YEAR
-  const variation = 1 + Math.sin((yearsFromStart + pair.phase) * 0.72) * 0.035
+  const cycle = yearsFromStart + pair.phase
+  const variation = 1
+    + Math.sin(cycle * 0.72) * 0.13
+    + Math.sin(cycle * 0.27 + 1.4) * 0.06
   return Math.max(
     0,
     pair.baseline * (1 + pair.annualGrowth) ** yearsFromStart * variation,

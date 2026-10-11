@@ -5,6 +5,7 @@ import {
   setWorkerUrl,
   type ExpressionSpecification,
   type FilterSpecification,
+  type GeoJSONSource,
   type StyleSpecification,
 } from 'maplibre-gl'
 import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
@@ -16,6 +17,7 @@ import type {
 import { COUNTRIES } from '../production/model/production'
 import { transformMapStyle } from './model/transformMapStyle'
 import { getMapCountryId } from './model/getMapCountryId'
+import { createProductionColumns } from './model/productionColumns'
 import './styles.css'
 
 setWorkerUrl(maplibreWorkerUrl)
@@ -29,6 +31,8 @@ interface MapViewProps {
   year: number
   onCountrySelect: (countryId: string) => void
 }
+
+type MapMode = '2d' | '3d'
 
 interface HoveredCountry {
   countryId: string
@@ -73,6 +77,7 @@ function applyTheme(map: MapLibreMap, theme: MapTheme) {
 function updateProductionLayers(
   map: MapLibreMap,
   data: MapCountryStyles,
+  mapMode: MapMode,
 ) {
   if (!map.getLayer('country-production-fill')) return
 
@@ -115,6 +120,16 @@ function updateProductionLayers(
     'line-opacity',
     data.UKR?.isSelected ? 1 : 0,
   )
+
+  const columnsSource = map.getSource('production-columns')
+  if (columnsSource?.type === 'geojson') {
+    (columnsSource as GeoJSONSource).setData(createProductionColumns(data))
+  }
+  map.setLayoutProperty(
+    'production-columns',
+    'visibility',
+    mapMode === '3d' ? 'visible' : 'none',
+  )
 }
 
 function MapView({
@@ -129,8 +144,10 @@ function MapView({
   const dataRef = useRef(data)
   const themeRef = useRef(theme)
   const countrySelectRef = useRef(onCountrySelect)
+  const mapModeRef = useRef<MapMode>('2d')
   const [mapStatus, setMapStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const [hoveredCountry, setHoveredCountry] = useState<HoveredCountry | null>(null)
+  const [mapMode, setMapMode] = useState<MapMode>('2d')
 
   useEffect(() => {
     dataRef.current = data
@@ -183,6 +200,7 @@ function MapView({
           zoom: 0,
           minZoom: 0,
           maxZoom: 4,
+          maxPitch: 60,
           renderWorldCopies: true,
         })
         mapRef.current = map
@@ -233,21 +251,44 @@ function MapView({
               'line-opacity': 0,
             },
           }, 'countries-label')
+          map.addSource('production-columns', {
+            type: 'geojson',
+            data: createProductionColumns(dataRef.current),
+          })
+          map.addLayer({
+            id: 'production-columns',
+            type: 'fill-extrusion',
+            source: 'production-columns',
+            layout: {
+              visibility: mapModeRef.current === '3d' ? 'visible' : 'none',
+            },
+            paint: {
+              'fill-extrusion-color': ['get', 'color'],
+              'fill-extrusion-height': ['get', 'height'],
+              'fill-extrusion-base': 0,
+              'fill-extrusion-opacity': 0.92,
+              'fill-extrusion-vertical-gradient': true,
+            },
+          }, 'countries-label')
           applyTheme(map, themeRef.current)
-          updateProductionLayers(map, dataRef.current)
+          updateProductionLayers(map, dataRef.current, mapModeRef.current)
+          map.dragRotate[mapModeRef.current === '3d' ? 'enable' : 'disable']()
+          map.setPitch(mapModeRef.current === '3d' ? 50 : 0)
           map.fitBounds([[-180, -58], [180, 84]], {
             padding: 18,
             duration: 0,
           })
 
           map.on('click', (event) => {
+            const layers = [
+              'country-production-fill',
+              'country-production-crimea-fill',
+              'countries-fill',
+              'crimea-fill',
+              ...(mapModeRef.current === '3d' ? ['production-columns'] : []),
+            ]
             const country = map?.queryRenderedFeatures(event.point, {
-              layers: [
-                'country-production-fill',
-                'country-production-crimea-fill',
-                'countries-fill',
-                'crimea-fill',
-              ],
+              layers,
             }).find((feature) => {
               return getMapCountryId(feature.layer.id, feature.properties) !== undefined
             })
@@ -259,13 +300,15 @@ function MapView({
             }
           })
           map.on('mousemove', (event) => {
+            const layers = [
+              'country-production-fill',
+              'country-production-crimea-fill',
+              'countries-fill',
+              'crimea-fill',
+              ...(mapModeRef.current === '3d' ? ['production-columns'] : []),
+            ]
             const country = map?.queryRenderedFeatures(event.point, {
-              layers: [
-                'country-production-fill',
-                'country-production-crimea-fill',
-                'countries-fill',
-                'crimea-fill',
-              ],
+              layers,
             }).find((feature) =>
               getMapCountryId(feature.layer.id, feature.properties) !== undefined,
             )
@@ -316,8 +359,20 @@ function MapView({
 
   useEffect(() => {
     const map = mapRef.current
-    if (map) updateProductionLayers(map, data)
-  }, [data])
+    if (map) updateProductionLayers(map, data, mapMode)
+  }, [data, mapMode])
+
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map) return
+    map.dragRotate[mapMode === '3d' ? 'enable' : 'disable']()
+    map.easeTo({ pitch: mapMode === '3d' ? 50 : 0, duration: 500 })
+  }, [mapMode])
+
+  function changeMapMode(nextMode: MapMode) {
+    mapModeRef.current = nextMode
+    setMapMode(nextMode)
+  }
 
   useEffect(() => {
     const map = mapRef.current
@@ -333,6 +388,30 @@ function MapView({
         role="application"
         aria-label="Interactive world production map. Click a country to explore its production."
       />
+      <div className="map-mode-control" role="group" aria-label="Map visualization">
+        <button
+          type="button"
+          aria-pressed={mapMode === '2d'}
+          className={mapMode === '2d' ? 'is-active' : ''}
+          onClick={() => changeMapMode('2d')}
+        >
+          2D
+        </button>
+        <button
+          type="button"
+          aria-label="3D production columns"
+          aria-pressed={mapMode === '3d'}
+          className={mapMode === '3d' ? 'is-active' : ''}
+          title={!selectedProduct
+            ? 'Switch to 3D map view; select a product to display columns'
+            : Object.keys(data).length
+              ? 'Show production as 3D columns'
+              : 'No production data is available for this selection'}
+          onClick={() => changeMapMode('3d')}
+        >
+          3D columns
+        </button>
+      </div>
       {hoveredCountry && mapStatus === 'ready' && (
         <CountryMapTooltip
           countryId={hoveredCountry.countryId}

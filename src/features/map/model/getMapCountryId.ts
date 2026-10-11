@@ -12,7 +12,7 @@ export function getMapCountryId(
 ) {
   if (CRIMEA_LAYER_IDS.has(layerId)) return 'UKR'
 
-  const countryId = properties?.ADM0_A3
+  const countryId = properties?.ADM0_A3 ?? properties?.countryId
   return typeof countryId === 'string' && SELECTABLE_COUNTRY_IDS.has(countryId)
     ? countryId
     : undefined

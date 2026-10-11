@@ -64,6 +64,16 @@ describe('production aggregates', () => {
     expect(getCountrySeries('FRA', 'coffee', 2010, 2026)).toEqual([])
   })
 
+  it('shows noticeable deterministic variation between annual mock values', () => {
+    const series = getCountrySeries('BRA', 'coffee', 2010, 2026)
+    const annualChanges = series.slice(1).map((entry, index) =>
+      (entry.production - series[index].production) / series[index].production,
+    )
+
+    expect(Math.max(...annualChanges) - Math.min(...annualChanges)).toBeGreaterThan(0.12)
+    expect(getCountrySeries('BRA', 'coffee', 2010, 2026)).toEqual(series)
+  })
+
   it('returns annual wheat production for each newly added country', () => {
     for (const countryId of ['UKR', 'POL', 'NLD']) {
       const series = getCountrySeries(countryId, 'wheat', 2010, 2026)
