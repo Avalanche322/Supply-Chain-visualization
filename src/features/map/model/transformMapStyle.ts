@@ -9,8 +9,8 @@ export function transformMapStyle(
   const colors = {
     background: dark ? '#182329' : '#e9eee7',
     countries: dark ? '#26343a' : '#f4f6f1',
-    boundaries: dark ? '#496b80' : '#9ba8b0',
-    coastline: dark ? '#64879b' : '#8799a4',
+    boundaries: dark ? '#49616b' : '#a1aa9d',
+    coastline: dark ? '#64808a' : '#8b988b',
     labels: dark ? '#eff4ec' : '#24332f',
     labelHalo: dark ? '#25343a' : '#ffffff',
   }

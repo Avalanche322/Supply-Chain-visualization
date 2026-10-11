@@ -53,24 +53,24 @@ function applyTheme(map: MapLibreMap, theme: MapTheme) {
   map.setPaintProperty('background', 'background-color', dark ? '#182329' : '#e9eee7')
   map.setPaintProperty('countries-fill', 'fill-color', dark ? '#26343a' : '#f4f6f1')
   map.setPaintProperty('crimea-fill', 'fill-color', dark ? '#26343a' : '#f4f6f1')
-  map.setPaintProperty('countries-boundary', 'line-color', dark ? '#496b80' : '#9ba8b0')
-  map.setPaintProperty('coastline', 'line-color', dark ? '#64879b' : '#8799a4')
+  map.setPaintProperty('countries-boundary', 'line-color', dark ? '#49616b' : '#a1aa9d')
+  map.setPaintProperty('coastline', 'line-color', dark ? '#64808a' : '#8b988b')
   map.setPaintProperty('countries-label', 'text-color', dark ? '#eff4ec' : '#24332f')
   map.setPaintProperty('countries-label', 'text-halo-color', dark ? '#25343a' : '#ffffff')
-  map.setPaintProperty('geolines', 'line-color', dark ? '#8cb8ca' : '#7d94a6')
-  map.setPaintProperty('geolines-label', 'text-color', dark ? '#8cb8ca' : '#7d94a6')
+  map.setPaintProperty('geolines', 'line-color', dark ? '#91aab1' : '#748774')
+  map.setPaintProperty('geolines-label', 'text-color', dark ? '#91aab1' : '#748774')
   map.setPaintProperty('geolines-label', 'text-halo-color', dark ? '#25343a' : '#ffffff')
-  map.setPaintProperty('selected-country-border', 'line-color', dark ? '#e8f5ff' : '#253f52')
+  map.setPaintProperty('selected-country-border', 'line-color', dark ? '#e3f1dc' : '#344738')
   map.setPaintProperty(
     'selected-country-crimea-border',
     'line-color',
-    dark ? '#e8f5ff' : '#253f52',
+    dark ? '#e3f1dc' : '#344738',
   )
-  map.setPaintProperty('country-production-fill', 'fill-outline-color', dark ? '#10191e' : '#9ba8b0')
+  map.setPaintProperty('country-production-fill', 'fill-outline-color', dark ? '#10191e' : '#a1aa9d')
   map.setPaintProperty(
     'country-production-crimea-fill',
     'fill-outline-color',
-    dark ? '#10191e' : '#9ba8b0',
+    dark ? '#10191e' : '#a1aa9d',
   )
 }
 
@@ -215,7 +215,7 @@ function MapView({
             paint: {
               'fill-color': '#000000',
               'fill-opacity': 0,
-              'fill-outline-color': themeRef.current === 'dark' ? '#f7faf4' : '#9ba8b0',
+              'fill-outline-color': themeRef.current === 'dark' ? '#f7faf4' : '#a1aa9d',
             },
           }, 'countries-boundary')
           map.addLayer({
@@ -227,7 +227,7 @@ function MapView({
             paint: {
               'fill-color': '#000000',
               'fill-opacity': 0.9,
-              'fill-outline-color': themeRef.current === 'dark' ? '#f7faf4' : '#9ba8b0',
+              'fill-outline-color': themeRef.current === 'dark' ? '#f7faf4' : '#a1aa9d',
             },
           }, 'countries-boundary')
           map.addLayer({
@@ -237,7 +237,7 @@ function MapView({
             'source-layer': 'countries',
             filter: ['==', ['get', 'ADM0_A3'], ''],
             paint: {
-              'line-color': '#f6f5e9',
+              'line-color': '#e3f1dc',
               'line-width': 2,
             },
           }, 'countries-label')
@@ -246,7 +246,7 @@ function MapView({
             type: 'line',
             source: 'crimea',
             paint: {
-              'line-color': '#f6f5e9',
+              'line-color': '#e3f1dc',
               'line-width': 2,
               'line-opacity': 0,
             },

@@ -108,8 +108,8 @@ describe('production aggregates', () => {
       const green = Number.parseInt(color.slice(3, 5), 16)
       const blue = Number.parseInt(color.slice(5, 7), 16)
 
-      expect(blue).toBeGreaterThan(green)
       expect(green).toBeGreaterThan(red)
+      expect(green).toBeGreaterThan(blue)
     }
   })
 

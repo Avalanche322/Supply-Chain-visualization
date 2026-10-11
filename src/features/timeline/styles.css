@@ -8,7 +8,7 @@
   border: 1px solid rgba(225, 235, 223, 0.14);
   border-radius: 10px;
   color: #e1e9df;
-  background: rgba(19, 31, 35, 0.9);
+  background: rgba(21, 32, 24, 0.92);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
   backdrop-filter: blur(9px);
 }
@@ -59,7 +59,7 @@
 
 .timeline-sparkline polyline {
   fill: none;
-  stroke: #8dcfff;
+  stroke: #a4cf91;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2.4px;
@@ -74,8 +74,8 @@
   height: 34px;
   border: 1px solid rgba(225, 235, 223, 0.2);
   border-radius: 50%;
-  color: #dcefff;
-  background: rgba(79, 151, 197, 0.22);
+  color: #e3f1dc;
+  background: rgba(94, 145, 87, 0.24);
   cursor: pointer;
   font-size: 12px;
 }
@@ -94,7 +94,7 @@
   border-radius: 99px;
   background: linear-gradient(
     90deg,
-    #8dcfff var(--timeline-progress),
+    #a4cf91 var(--timeline-progress),
     rgba(225, 235, 223, 0.23) var(--timeline-progress)
   );
   cursor: pointer;
@@ -104,22 +104,22 @@
   width: 13px;
   height: 13px;
   appearance: none;
-  border: 2px solid #e1f2ff;
+  border: 2px solid #e3f1dc;
   border-radius: 50%;
-  background: #5599c7;
+  background: #6f9d67;
 }
 
 .timeline-slider::-moz-range-thumb {
   width: 10px;
   height: 10px;
-  border: 2px solid #e1f2ff;
+  border: 2px solid #e3f1dc;
   border-radius: 50%;
-  background: #5599c7;
+  background: #6f9d67;
 }
 
 .timeline-slider:focus-visible,
 .timeline-play:focus-visible {
-  outline: 2px solid #8dcfff;
+  outline: 2px solid #a4cf91;
   outline-offset: 3px;
 }
 
@@ -160,13 +160,13 @@
 .theme-light .timeline-play {
   border-color: #d7e1d2;
   color: #3e5942;
-  background: #eaf4fa;
+  background: #e8f1e4;
 }
 
 .theme-light .timeline-slider {
   background: linear-gradient(
     90deg,
-    #397eae var(--timeline-progress),
+    #4d8055 var(--timeline-progress),
     #dce4d9 var(--timeline-progress)
   );
 }

@@ -22,7 +22,7 @@
   padding: 3px;
   border: 1px solid rgba(225, 235, 223, 0.14);
   border-radius: 6px;
-  background: rgba(19, 31, 35, 0.9);
+  background: rgba(21, 32, 24, 0.92);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
   backdrop-filter: blur(8px);
 }
@@ -41,8 +41,8 @@
 }
 
 .map-mode-control button.is-active {
-  color: #dcefff;
-  background: rgba(79, 151, 197, 0.28);
+  color: #e3f1dc;
+  background: rgba(94, 145, 87, 0.3);
 }
 
 .map-mode-control button:disabled {
@@ -51,7 +51,7 @@
 }
 
 .map-mode-control button:focus-visible {
-  outline: 2px solid #8dcfff;
+  outline: 2px solid #a4cf91;
   outline-offset: 1px;
 }
 
@@ -63,7 +63,7 @@
   border: 1px solid rgba(225, 235, 223, 0.15);
   border-radius: 8px;
   color: #e7eee5;
-  background: rgba(19, 31, 35, 0.95);
+  background: rgba(21, 32, 24, 0.96);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   pointer-events: none;
   backdrop-filter: blur(8px);
@@ -94,7 +94,7 @@
 
 .map-tooltip-product {
   margin-top: 10px;
-  color: #8dcfff;
+  color: #a4cf91;
   font-size: 11px;
   font-weight: 600;
 }
@@ -113,7 +113,7 @@
 }
 
 .map-tooltip-change.is-positive {
-  color: #8dcfff;
+  color: #a4cf91;
 }
 
 .map-tooltip-change.is-negative {
@@ -142,7 +142,7 @@
 }
 
 .theme-light .map-status {
-  color: #3b5b70;
+  color: #4b604d;
   background: #e9eee7;
 }
 
@@ -158,7 +158,7 @@
   border: 1px solid rgba(225, 235, 223, 0.12);
   border-radius: 6px;
   color: rgba(225, 234, 225, 0.8);
-  background: rgba(19, 31, 35, 0.88);
+  background: rgba(21, 32, 24, 0.92);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
   font-size: 8px;
   backdrop-filter: blur(8px);
@@ -184,7 +184,7 @@
   width: 70px;
   height: 6px;
   border-radius: 8px;
-  background: linear-gradient(90deg, #224d6f, #4f97c5, #7dc5f4);
+  background: linear-gradient(90deg, #244b32, #5e9157, #a4cf91);
 }
 
 .legend-divider {
@@ -198,7 +198,7 @@
   height: 9px;
   border: 1px solid #3b4a4d;
   border-radius: 2px;
-  background: #26343b;
+  background: #26343a;
 }
 
 .map-hint {
@@ -248,12 +248,12 @@
 }
 
 .theme-light .map-mode-control button {
-  color: #5f707b;
+  color: #65736a;
 }
 
 .theme-light .map-mode-control button.is-active {
-  color: #285d7e;
-  background: #dcecf6;
+  color: #42694a;
+  background: #e3efdd;
 }
 
 .theme-light .map-tooltip-title > span:last-child {
@@ -261,11 +261,11 @@
 }
 
 .theme-light .map-tooltip-product {
-  color: #397eae;
+  color: #4d8055;
 }
 
 .theme-light .map-tooltip-change.is-positive {
-  color: #397eae;
+  color: #4d8055;
 }
 
 .theme-light .map-tooltip-change.is-negative {
@@ -277,7 +277,7 @@
 }
 
 .theme-light .legend-gradient {
-  background: linear-gradient(90deg, #c2dcee, #6cadd2, #2b6a99);
+  background: linear-gradient(90deg, #d8e9d2, #85b77a, #397545);
 }
 
 .theme-light .legend-divider {

@@ -6,7 +6,13 @@ The map fills the viewport, with searchable cascading filters, production summar
 
 ## Prototype result
 
-![Origin production map showing wheat production across countries](./docs/screenshots/production-map.png)
+### Wheat production — 3D columns
+
+![Origin map showing wheat production with 3D columns](./docs/screenshots/wheat-production-3d.png)
+
+### Semiconductor production — 2D map
+
+![Origin map showing semiconductor production and country selection](./docs/screenshots/semiconductors-production-2d.png)
 
 ## Run locally
 

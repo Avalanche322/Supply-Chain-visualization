@@ -1,10 +1,10 @@
 .filter-guidance {
   margin: -3px 0 17px;
   padding: 10px 11px;
-  border-left: 2px solid #5b91b5;
+  border-left: 2px solid #668b5c;
   border-radius: 3px;
-  color: #3b5b70;
-  background: #edf5fa;
+  color: #46634a;
+  background: #eff5ea;
   font-size: 12px;
   line-height: 1.5;
 }
@@ -50,8 +50,8 @@
 }
 
 .filter-select-input:focus {
-  border-color: #5b9bc2;
-  box-shadow: 0 0 0 3px rgba(91, 155, 194, 0.16);
+  border-color: #638f5c;
+  box-shadow: 0 0 0 3px rgba(99, 143, 92, 0.16);
 }
 
 .filter-select label,
@@ -127,11 +127,11 @@
 
 .filter-option:hover,
 .filter-option.is-active {
-  background: #edf5fa;
+  background: #eff5ea;
 }
 
 .filter-option.is-selected {
-  color: #315f7c;
+  color: #42694a;
   font-weight: 700;
 }
 
@@ -168,7 +168,7 @@
 }
 
 .filter-clear:focus-visible {
-  outline: 2px solid #5b9bc2;
+  outline: 2px solid #638f5c;
   outline-offset: 1px;
 }
 
@@ -194,10 +194,10 @@
   min-height: 27px;
   flex: 0 0 auto;
   padding: 3px 8px 3px 10px;
-  border: 1px solid #d8e7f1;
+  border: 1px solid #dce8d5;
   border-radius: 999px;
-  color: #315f7c;
-  background: #edf5fa;
+  color: #42694a;
+  background: #eff5ea;
   cursor: pointer;
   font: inherit;
   font-size: 11px;
@@ -223,20 +223,20 @@
 
 .filter-chip:focus-visible,
 .clear-filters:focus-visible {
-  outline: 2px solid #5b9bc2;
+  outline: 2px solid #638f5c;
   outline-offset: 2px;
 }
 
 .year-range select:focus,
 .filter-select-input:focus-visible {
-  border-color: #5b9bc2;
-  box-shadow: 0 0 0 3px rgba(91, 155, 194, 0.16);
+  border-color: #638f5c;
+  box-shadow: 0 0 0 3px rgba(99, 143, 92, 0.16);
 }
 
 .year-field {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 12px;
   margin-top: 17px;
 }

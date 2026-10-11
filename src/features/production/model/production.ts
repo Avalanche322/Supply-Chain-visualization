@@ -206,8 +206,8 @@ function colorForProductionInTheme(
 ) {
   if (value <= 0) return 'rgba(0, 0, 0, 0)'
   const amount = Math.min(value / maxValue, 1)
-  const start = theme === 'dark' ? [34, 77, 111] : [194, 220, 238]
-  const end = theme === 'dark' ? [125, 197, 244] : [43, 106, 153]
+  const start = theme === 'dark' ? [36, 75, 50] : [216, 233, 210]
+  const end = theme === 'dark' ? [164, 207, 145] : [57, 117, 69]
   const color = start.map((channel, index) =>
     Math.round(channel + (end[index] - channel) * amount),
   )
